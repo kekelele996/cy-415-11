@@ -32,7 +32,7 @@ export const useItemStore = defineStore('items', {
     },
     myItems: (state) => (userId: string) => state.items.filter((item) => item.user_id === userId),
     availableMyItems: (state) => (userId: string) =>
-      state.items.filter((item) => item.user_id === userId || item.status === ItemStatus.AVAILABLE),
+      state.items.filter((item) => item.user_id === userId && item.status === ItemStatus.AVAILABLE),
   },
   actions: {
     async hydrate() {

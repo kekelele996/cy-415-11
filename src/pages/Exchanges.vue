@@ -75,7 +75,7 @@ const stats = useExchangeStats(() => exchangeStore.exchanges);
 
 const completeExchange = async (id: string) => {
   await exchangeStore.complete(id);
-  itemStore.items = itemStore.items.map((item) => item);
+  await itemStore.hydrate();
 };
 
 void ExchangeStatus.PENDING;

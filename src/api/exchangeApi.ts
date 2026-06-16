@@ -54,6 +54,7 @@ export const exchangeApi = {
     const nextExchange: Exchange = { ...current, status, updated_at: new Date().toISOString() };
     if (status === ExchangeStatus.COMPLETED) {
       await itemApi.setStatus(current.from_item_id, ItemStatus.EXCHANGED);
+      await itemApi.setStatus(current.to_item_id, ItemStatus.EXCHANGED);
     }
     await storage.set(
       STORAGE_KEYS.exchanges,

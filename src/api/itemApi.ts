@@ -73,7 +73,7 @@ export const itemApi = {
       ...draft,
       id: storage.createId('item'),
       status: draft.status ?? ItemStatus.AVAILABLE,
-      location: seedItems[0]?.location ?? draft.location,
+      location: draft.location,
       created_at: new Date().toISOString(),
     };
     await storage.set(STORAGE_KEYS.items, [nextItem, ...items]);

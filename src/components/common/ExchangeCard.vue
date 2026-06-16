@@ -20,10 +20,10 @@
     <footer>
       <span v-if="fromUser && toUser">{{ fromUser.nickname }} → {{ toUser.nickname }}</span>
       <div v-if="canOperate" class="exchange-card__actions">
-        <button v-if="exchange.status === ExchangeStatus.PENDING" type="button" @click="$emit('accept', exchange.id)">
+        <button v-if="isToUser && exchange.status === ExchangeStatus.PENDING" type="button" @click="$emit('accept', exchange.id)">
           同意
         </button>
-        <button v-if="exchange.status === ExchangeStatus.PENDING" type="button" @click="$emit('reject', exchange.id)">
+        <button v-if="isToUser && exchange.status === ExchangeStatus.PENDING" type="button" @click="$emit('reject', exchange.id)">
           拒绝
         </button>
         <button v-if="exchange.status === ExchangeStatus.ACCEPTED" type="button" @click="$emit('complete', exchange.id)">
@@ -61,9 +61,11 @@ const fromItem = computed(() => props.items.find((item) => item.id === props.exc
 const toItem = computed(() => props.items.find((item) => item.id === props.exchange.to_item_id));
 const fromUser = computed(() => props.users.find((user) => user.id === props.exchange.from_user_id));
 const toUser = computed(() => props.users.find((user) => user.id === props.exchange.to_user_id));
+const isToUser = computed(() => authStore.currentUser?.id === props.exchange.to_user_id);
+const isFromUser = computed(() => authStore.currentUser?.id === props.exchange.from_user_id);
 const canOperate = computed(
   () =>
-    authStore.currentUser?.id === props.exchange.from_user_id ||
-    (authStore.currentUser?.id === props.exchange.to_user_id && props.exchange.status === ExchangeStatus.ACCEPTED),
+    (isToUser.value && props.exchange.status === ExchangeStatus.PENDING) ||
+    ((isFromUser.value || isToUser.value) && props.exchange.status === ExchangeStatus.ACCEPTED),
 );
 </script>
