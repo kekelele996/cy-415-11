@@ -26,7 +26,7 @@
         <button v-if="isToUser && exchange.status === ExchangeStatus.PENDING" type="button" @click="$emit('reject', exchange.id)">
           拒绝
         </button>
-        <button v-if="exchange.status === ExchangeStatus.ACCEPTED" type="button" @click="$emit('complete', exchange.id)">
+        <button v-if="isFromUser && exchange.status === ExchangeStatus.ACCEPTED" type="button" @click="$emit('complete', exchange.id)">
           完成
         </button>
       </div>
@@ -66,6 +66,6 @@ const isFromUser = computed(() => authStore.currentUser?.id === props.exchange.f
 const canOperate = computed(
   () =>
     (isToUser.value && props.exchange.status === ExchangeStatus.PENDING) ||
-    ((isFromUser.value || isToUser.value) && props.exchange.status === ExchangeStatus.ACCEPTED),
+    (isFromUser.value && props.exchange.status === ExchangeStatus.ACCEPTED),
 );
 </script>
